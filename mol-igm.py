@@ -1,28 +1,29 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
+from matplotlib import rcParams
+
+# ============================================================
+# GLOBAL FONT SETTINGS
+# ============================================================
+
+rcParams['font.family'] = 'Times New Roman'
+rcParams['mathtext.fontset'] = 'custom'
+rcParams['mathtext.rm'] = 'Times New Roman'
+rcParams['mathtext.it'] = 'Times New Roman:italic'
+rcParams['mathtext.bf'] = 'Times New Roman:bold'
 
 # ============================================================
 # FILE PATH
 # ============================================================
 
-filename = r"C:\Users\mohan\Desktop\CEVYUX\IGMPLOT\Cu\agostic\Cu-igm.dat"
+filename = r"C:\Users\mohan\Desktop\CEVYUX\IGMPLOT\Cu\total.dat"
 
 # ============================================================
 # LOAD DATA
 # ============================================================
 
-# Skip header line
 data = np.loadtxt(filename, skiprows=1)
-
-# ------------------------------------------------------------
-# According to:
-# plot "mol-igm.dat" u 1:3:5
-#
-# Column 1 = sign(lambda2)rho
-# Column 3 = delta g
-# Column 5 = qg descriptor
-# ------------------------------------------------------------
 
 x = data[:, 0]
 y = data[:, 2]
@@ -42,8 +43,8 @@ sc = ax.scatter(
     x,
     y,
     c=qg,
-    cmap='jet',      # Similar to gnuplot rgbformulae 22,13,-31
-    s=8,             # Point size
+    cmap='jet',
+    s=8,
     alpha=0.95,
     linewidths=0,
     vmin=1,
@@ -55,23 +56,23 @@ sc = ax.scatter(
 # ============================================================
 
 ax.set_xlabel(
-    r'sign($\lambda_2$)$\rho$ (a.u.)',
-    fontsize=20
+    r'$\mathbf{sign}(\boldsymbol{\lambda_2})\boldsymbol{\rho}\ \mathbf{(a.u.)}$',
+    fontsize=24,
+    fontweight='bold'
 )
 
 ax.set_ylabel(
-    r'$\delta g$ (a.u.)',
-    fontsize=20
+    r'$\boldsymbol{\delta g}\ \mathbf{(a.u.)}$',
+    fontsize=24,
+    fontweight='bold'
 )
 
 # ============================================================
 # AXIS LIMITS
 # ============================================================
 
-# Adjusted to match your uploaded figure
-
 ax.set_xlim(-0.4, 0.2)
-ax.set_ylim(0, 1)
+ax.set_ylim(0, 0.8)
 
 # ============================================================
 # TICKS
@@ -80,25 +81,30 @@ ax.set_ylim(0, 1)
 ax.tick_params(
     axis='both',
     which='major',
-    direction='in',
-    top=True,
-    right=True,
+    direction='out',
+    top=False,
+    right=False,
+    bottom=True,
+    left=True,
     length=6,
-    width=1.3,
-    labelsize=14
+    width=3,
+    labelsize=20
 )
 
-# Major tick spacing
-
 ax.xaxis.set_major_locator(MultipleLocator(0.1))
-ax.yaxis.set_major_locator(MultipleLocator(0.1))
+ax.yaxis.set_major_locator(MultipleLocator(0.2))
+
+# Bold tick labels
+for label in ax.get_xticklabels() + ax.get_yticklabels():
+    label.set_fontweight('bold')
+    label.set_fontname('Times New Roman')
 
 # ============================================================
 # SPINE THICKNESS
 # ============================================================
 
 for spine in ax.spines.values():
-    spine.set_linewidth(1.5)
+    spine.set_linewidth(3.0)
 
 # ============================================================
 # COLORBAR
@@ -107,23 +113,22 @@ for spine in ax.spines.values():
 cbar = plt.colorbar(sc, ax=ax, pad=0.02)
 
 cbar.set_label(
-    r'$q_g$',
-    fontsize=18
+    r'$\boldsymbol{q_g}$',
+    fontsize=20,
+    fontweight='bold'
 )
 
 cbar.ax.tick_params(
-    direction='in',
+    direction='out',
     length=5,
-    width=1.2,
-    labelsize=12
+    width=3,
+    labelsize=20,
 )
 
-# ============================================================
-# OPTIONAL GRID
-# ============================================================
-
-# Uncomment if needed
-# ax.grid(alpha=0.2)
+# Bold colorbar ticks
+for label in cbar.ax.get_yticklabels():
+    label.set_fontweight('bold')
+    label.set_fontname('Times New Roman')
 
 # ============================================================
 # LAYOUT
